@@ -1,0 +1,65 @@
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+#main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+  overflow: hidden;
+}
+
+#stars {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#solar-system,
+#path {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+#solar-system {
+  background-color: yellow;
+  box-shadow: 0 0 15px 5px yellow;
+}
+
+#path {
+  border: solid 1px rgba(255, 255, 255, 0.2);
+}
+
+.planet {
+  animation: infinite linear;
+}
+
+.star {
+  box-shadow: 0 0 10px 1px white;
+}
+
+@keyframes movePlanetCW {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes movePlanetCCW {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
