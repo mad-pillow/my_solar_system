@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -17,6 +18,30 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+#full-screen {
+  font-family: sans-serif;
+  text-transform: uppercase;
+  position: absolute;
+  right: 2%;
+  top: 1%;
+  color: white;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+#full-screen::before {
+  content: "Х";
+}
+
+#full-screen.notfullscreen {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+#full-screen.notfullscreen::before {
+  content: "На весь экран";
 }
 
 #solar-system,

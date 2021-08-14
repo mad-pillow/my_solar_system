@@ -18,6 +18,28 @@ body {
   height: 100%;
 }
 
+#full-screen {
+  font-family: sans-serif;
+  text-transform: uppercase;
+  position: absolute;
+  right: 2%;
+  top: 1%;
+  color: white;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  &::before {
+    content: "Х";
+  }
+
+  &.notfullscreen {
+    background-color: rgba(255, 255, 255, 0.4);
+    &::before {
+      content: "На весь экран";
+    }
+  }
+}
+
 #solar-system,
 #path {
   position: absolute;

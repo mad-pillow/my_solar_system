@@ -1,6 +1,56 @@
 const mainContainer = document.querySelector("#main");
 const stars = document.querySelector("#stars");
 const solarSystem = document.querySelector("#solar-system");
+const fullscreenBtn = document.querySelector("#full-screen");
+
+function goFullscreen() {
+  fullscreenBtn.classList.remove("notfullscreen");
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  } else if (document.documentElement.mozRequestFullScreen) {
+    document.documentElement.mozRequestFullScreen();
+  } else if (document.documentElement.webkitRequestFullscreen) {
+    document.documentElement.webkitRequestFullscreen();
+  } else if (document.documentElement.msRequestFullscreen) {
+    document.documentElement.msRequestFullscreen();
+  }
+}
+
+function leaveFullscreen() {
+  fullscreenBtn.classList.add("notfullscreen");
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  if (document.fullscreenElement) {
+    fullscreenBtn.classList.remove("notfullscreen");
+  } else {
+    fullscreenBtn.classList.add("notfullscreen");
+  }
+});
+
+fullscreenBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  return document.fullscreenElement ? leaveFullscreen() : goFullscreen();
+});
+
+function setSunSize() {
+  const width = parseInt(getComputedStyle(mainContainer).width);
+  const height = parseInt(getComputedStyle(mainContainer).height);
+  const size = width > height ? height / 5 : width / 5;
+
+  solarSystem.style.width = solarSystem.style.height = `${size}px`;
+
+  return size;
+}
+
+setSunSize();
 
 (function createStars(number = 800, parent = stars) {
   for (let i = 0; i < number; i++) {
@@ -22,9 +72,11 @@ const solarSystem = document.querySelector("#solar-system");
   }
 })();
 
-function createPlanet(x, y, parent = mainContainer) {
+function createPlanet(x, y, parent = solarSystem) {
   const newPlanet = document.createElement("div");
-  const randomSize = Math.ceil(Math.random() * 40) + 40;
+  const maxPlanetSize = setSunSize() / 4;
+  const randomSize =
+    Math.ceil(Math.random() * maxPlanetSize) + maxPlanetSize / 1.75;
   const r = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -60,7 +112,7 @@ function createPlanet(x, y, parent = mainContainer) {
   return newPlanet;
 }
 
-function createPath(parent = mainContainer) {
+function createPath(parent = solarSystem) {
   const path = document.createElement("div");
   path.id = "path";
 
@@ -79,12 +131,18 @@ function changePath(e) {
 }
 
 mainContainer.addEventListener("mouseup", (e) => {
-  createPlanet(e.clientX, e.clientY);
-  mainContainer.removeEventListener("mousemove", changePath);
-  document.querySelector("#path").remove();
+  if (e.target !== fullscreenBtn) {
+    createPlanet(e.clientX, e.clientY);
+    mainContainer.removeEventListener("mousemove", changePath);
+    mainContainer.removeEventListener("touchmove", changePath);
+    document.querySelector("#path").remove();
+  }
 });
 
 mainContainer.addEventListener("mousedown", (e) => {
-  createPath();
-  mainContainer.addEventListener("mousemove", changePath);
+  if (e.target !== fullscreenBtn) {
+    createPath();
+    mainContainer.addEventListener("mousemove", changePath);
+    mainContainer.addEventListener("touchmove", changePath);
+  }
 });
